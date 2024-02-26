@@ -1,20 +1,24 @@
-name: Deploy to IPFS
+name: IPFS Pinata Deployment
+
 on:
-    push:
-      branches:
+  push:
+    branches:
       - main
+
 jobs:
   deploy:
+    name: Deploy to IPFS via Pinata
     runs-on: ubuntu-latest
-    
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-    
-    - name: IPFS Pinata deploy         
-      uses: popovoleksandr/ipfs-pinata-deploy-action@v1.6.3              
-      with:           
-        pin-name: 'My Website ${{ github.sha }}'                  
-        path: 'build'                  
-        pinata-api-key: ${{ secrets.PINATA_API_KEY }}                  
-        pinata-secret-api-key: ${{ secrets.PINATA_SECRET_API_KEY }} 
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: IPFS Pinata deploy GitHub action
+        uses: popovoleksandr/ipfs-pinata-deploy-action@v1.6.3
+        with:
+          path: build # Path to directory which should be sent to Pinata
+          pin-name: MinsooKIM # Human name for pin on Pinata
+          pinata-api-key: ${{ secrets.PINATA_API_KEY }} # Pinata API key
+          pinata-secret-api-key: ${{ secrets.PINATA_SECRET_API_KEY }} # Pinata Secret API key
+          remove-old: false # Should action also remove old pins from Pinata service with same name
+          verbose: false # Verbose mode
